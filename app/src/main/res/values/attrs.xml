@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ProgressBarAnim">
+
+        <attr name="animDuration" format="integer"/>
+        <attr name="itemColor" format="color"/>
+        <attr name="itemColorEnd" format="color"/>
+        <attr name="itemCount" format="integer"/>
+        <attr name="itemIcon" format="reference"/>
+
+        <attr name="itemHeight" format="dimension"/>
+        <attr name="itemWidth" format="dimension"/>
+
+        <attr name="itemStyle" format="enum">
+            <enum name="dash" value="0"/>
+            <enum name="arrow" value="1"/>
+            <enum name="gradient" value="2"/>
+            <enum name="circle" value="3"/>
+        </attr>
+
+    </declare-styleable>
+</resources>
