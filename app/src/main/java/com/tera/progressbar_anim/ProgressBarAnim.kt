@@ -344,7 +344,9 @@ class ProgressBarAnim(
                     mAnimator?.pause()
                 }, 100)
             else {
+                mHandler.postDelayed({
                 mAnimator?.resume()
+                }, 100)
             }
         }
 

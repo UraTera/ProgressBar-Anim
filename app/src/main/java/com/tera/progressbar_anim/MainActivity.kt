@@ -2,14 +2,14 @@ package com.tera.progressbar_anim
 
 import android.os.Bundle
 import android.view.View
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.isVisible
 import com.tera.progressbar_anim.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
+
+    companion object{
+        const val KEY_ANIM = "key_anim"
+    }
 
     private lateinit var binding: ActivityMainBinding
     private var keyAnim = false
@@ -19,27 +19,24 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setStart()
+        setState()
         initButtons()
-    }
-
-    private fun setStart() = with(binding) {
-        hidePb()
-        pb2.animation = false
-        pb3.animation = false
-        pb6.animation = false
     }
 
     private fun initButtons() = with(binding) {
         bnStart.setOnClickListener {
             keyAnim = !keyAnim
-            pb2.animation = keyAnim
-            pb3.animation = keyAnim
-            pb6.animation = keyAnim
-
-            if (keyAnim) showPb()
-            else hidePb()
+            setState()
         }
+    }
+
+    private fun setState() = with(binding) {
+        pb2.animation = keyAnim
+        pb3.animation = keyAnim
+        pb6.animation = keyAnim
+
+        if (keyAnim) showPb()
+        else hidePb()
     }
 
     private fun hidePb() = with(binding) {
@@ -52,6 +49,17 @@ class MainActivity : AppCompatActivity() {
         pb1.visibility = View.VISIBLE
         pb4.visibility = View.VISIBLE
         pb5.visibility = View.VISIBLE
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        keyAnim = savedInstanceState.getBoolean(KEY_ANIM)
+        setState()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putBoolean(KEY_ANIM, keyAnim)
     }
 
 }
