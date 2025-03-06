@@ -24,4 +24,9 @@ dependencies {
 | |dash
 | |gradient
 
+Method:
+```
+setAnimation
+```
+false – pause, true – resume.
 
