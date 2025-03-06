@@ -26,7 +26,6 @@ class ProgressBarAnim(
     defStyleRes: Int
 ) : View(context, attrs, defStyleRes) {
 
-
     constructor(context: Context, attributesSet: AttributeSet?) :
             this(context, attributesSet, 0)
 
@@ -37,7 +36,6 @@ class ProgressBarAnim(
         const val ITEM_COUNT = 10
         const val ITEM_COLOR = Color.BLUE
         const val DURATION = 1500
-
     }
 
     private val mPaintDash = Paint()
@@ -81,7 +79,6 @@ class ProgressBarAnim(
         mItemHeight = a.getDimensionPixelSize(R.styleable.ProgressBarAnim_itemHeight, 0)
         mItemWidth = a.getDimensionPixelSize(R.styleable.ProgressBarAnim_itemWidth, 0)
         mItemStyle = a.getInt(R.styleable.ProgressBarAnim_itemStyle, 0)
-
         a.recycle()
 
         initPaints()
@@ -349,6 +346,5 @@ class ProgressBarAnim(
                 }, 100)
             }
         }
-
 
 }

@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/bnStart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -63,7 +63,7 @@
                     android:id="@+id/pb4"
                     style="@style/pb_bar"
                     app:itemColor="@color/red"
-                    app:itemStyle="circle"/>
+                    app:itemStyle="circle" />
 
             </FrameLayout>
         </LinearLayout>
@@ -77,9 +77,9 @@
                 <com.tera.progressbar_anim.ProgressBarAnim
                     android:id="@+id/pb5"
                     style="@style/pb_bar"
-                    app:itemHeight="40dp"
                     app:itemColor="@color/green_700"
                     app:itemColorEnd="@color/yellow"
+                    app:itemHeight="40dp"
                     app:itemStyle="gradient" />
             </FrameLayout>
 
