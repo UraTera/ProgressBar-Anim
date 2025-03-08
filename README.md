@@ -5,7 +5,7 @@
 Open source. To use the ready-made library, add the dependency:
 ```
 dependencies {
-    implementation("io.github.uratera:progress_anim:1.0.0")
+    implementation("io.github.uratera:progress_anim:1.0.1")
 }
 ```
 ### Attributes
