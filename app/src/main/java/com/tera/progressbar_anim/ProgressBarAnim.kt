@@ -19,6 +19,7 @@ import android.view.animation.LinearInterpolator
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import kotlin.math.asin
+import kotlin.math.min
 
 class ProgressBarAnim(
     context: Context,
@@ -318,18 +319,9 @@ class ProgressBarAnim(
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
-
-        if (w > h) {
-            mRadius = h / 2f
-            val dW = (w - h) / 2
-            mXc = mRadius + dW
-            mYc = mRadius
-        } else {
-            mRadius = w / 2f
-            val dY = (h - w) / 2
-            mXc = mRadius
-            mYc = mRadius + dY
-        }
+        mRadius = min(w, h) / 2f
+        mXc = w / 2f
+        mYc = h / 2f
         startAnim()
     }
 
