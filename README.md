@@ -1,6 +1,7 @@
 ## An example of creating a circular animated ProgressBar.
 
-![ProgressBarAnim](https://github.com/user-attachments/assets/dbbb6508-626b-4d9e-b26b-221e31bdab7e)
+![ProgressBarAnim3](https://github.com/user-attachments/assets/08eb2eb1-815f-4856-8e00-200150357c10)
+
 
 Open source. To use the ready-made library, add the dependency:
 ```
