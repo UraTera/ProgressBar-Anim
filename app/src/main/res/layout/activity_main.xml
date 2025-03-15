@@ -36,6 +36,7 @@
                 <com.tera.progressbar_anim.ProgressBarAnim
                     android:id="@+id/pb2"
                     style="@style/pb_bar"
+
                     app:itemColor="@color/white"
                     app:itemStyle="gradient" />
             </FrameLayout>
@@ -51,6 +52,7 @@
                 <com.tera.progressbar_anim.ProgressBarAnim
                     android:id="@+id/pb3"
                     style="@style/pb_bar"
+
                     app:itemColor="@color/white"
                     app:itemStyle="arrow" />
             </FrameLayout>
@@ -97,6 +99,34 @@
                     app:itemWidth="11dp" />
             </FrameLayout>
         </LinearLayout>
+
+        <LinearLayout style="@style/line">
+
+            <FrameLayout
+                style="@style/frame"
+                android:background="@color/black">
+
+                <com.tera.progressbar_anim.ProgressBarAnim
+                    android:id="@+id/pb7"
+                    style="@style/pb_bar"
+                    app:itemStyle="random" />
+            </FrameLayout>
+
+            <FrameLayout
+                style="@style/frame"
+                android:background="@color/white">
+
+                <com.tera.progressbar_anim.ProgressBarAnim
+                    android:id="@+id/pb8"
+                    style="@style/pb_bar"
+                    app:itemColor="@color/blue"
+                    app:itemColorEnd="@color/red"
+                    app:itemStyle="gradient"
+                    app:itemBlurWidth="5dp"/>
+            </FrameLayout>
+        </LinearLayout>
+
+
     </LinearLayout>
 
     <Button

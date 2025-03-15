@@ -34,6 +34,7 @@ class MainActivity : AppCompatActivity() {
         pb2.animation = keyAnim
         pb3.animation = keyAnim
         pb6.animation = keyAnim
+        pb7.animation = keyAnim
 
         if (keyAnim) showPb()
         else hidePb()
@@ -43,12 +44,14 @@ class MainActivity : AppCompatActivity() {
         pb1.visibility = View.INVISIBLE
         pb4.visibility = View.INVISIBLE
         pb5.visibility = View.INVISIBLE
+        pb8.visibility = View.INVISIBLE
     }
 
     private fun showPb() = with(binding) {
         pb1.visibility = View.VISIBLE
         pb4.visibility = View.VISIBLE
         pb5.visibility = View.VISIBLE
+        pb8.visibility = View.VISIBLE
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {

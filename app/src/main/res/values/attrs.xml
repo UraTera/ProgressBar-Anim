@@ -3,6 +3,7 @@
     <declare-styleable name="ProgressBarAnim">
 
         <attr name="animDuration" format="integer"/>
+        <attr name="itemBlurWidth" format="dimension"/>
         <attr name="itemColor" format="color"/>
         <attr name="itemColorEnd" format="color"/>
         <attr name="itemCount" format="integer"/>
@@ -16,6 +17,12 @@
             <enum name="arrow" value="1"/>
             <enum name="gradient" value="2"/>
             <enum name="circle" value="3"/>
+            <enum name="random" value="4"/>
+        </attr>
+
+        <attr name="itemBlurStyle" format="enum">
+            <enum name="normal" value="0"/>
+            <enum name="solid" value="1"/>
         </attr>
 
     </declare-styleable>

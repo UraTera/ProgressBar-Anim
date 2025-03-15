@@ -12,7 +12,7 @@
         android:id="@+id/line"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="20dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/bnStart"
         app:layout_constraintEnd_toEndOf="parent"
@@ -64,6 +64,24 @@
                     app:itemStyle="arrow" />
             </FrameLayout>
 
+        </LinearLayout>
+
+        <LinearLayout style="@style/line">
+
+            <FrameLayout
+                style="@style/frame"
+                android:background="@color/black">
+
+                <com.tera.progressbar_anim.ProgressBarAnim
+                    android:id="@+id/pb6"
+                    style="@style/pb_bar"
+                    app:animDuration="3000"
+                    app:itemColor="@color/white"
+                    app:itemCount="8"
+                    app:itemIcon="@drawable/ic_star"
+                    app:itemWidth="11dp" />
+            </FrameLayout>
+
             <FrameLayout
                 style="@style/frame"
                 android:background="@color/white">
@@ -82,15 +100,26 @@
                 android:background="@color/black">
 
                 <com.tera.progressbar_anim.ProgressBarAnim
-                    android:id="@+id/pb6"
+                    android:id="@+id/pb7"
                     style="@style/pb_bar"
-                    app:animDuration="3000"
-                    app:itemColor="@color/white"
-                    app:itemCount="8"
-                    app:itemIcon="@drawable/ic_star"
-                    app:itemWidth="11dp" />
+                    app:itemStyle="random" />
             </FrameLayout>
+
+            <FrameLayout
+                style="@style/frame"
+                android:background="@color/white">
+
+                <com.tera.progressbar_anim.ProgressBarAnim
+                    android:id="@+id/pb8"
+                    style="@style/pb_bar"
+                    app:itemColor="@color/blue"
+                    app:itemColorEnd="@color/red"
+                    app:itemStyle="gradient"
+                    app:itemBlurWidth="5dp"/>
+            </FrameLayout>
+
         </LinearLayout>
+
     </LinearLayout>
 
     <Button
