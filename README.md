@@ -23,14 +23,14 @@ dependencies {
 |itemWidth     |Items width
 |itemStyle     |Styles of items (default – dash)
 
-**Styles of item**
+**Styles of item:**
 - arrow
 - circle
 - dash
 - gradient
 - random 
 
-**Styles of blur**
+**Styles of blur:**
 - normal
 - solid
 
