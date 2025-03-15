@@ -6,25 +6,40 @@
 Open source. To use the ready-made library, add the dependency:
 ```
 dependencies {
-    implementation("io.github.uratera:progress_anim:1.0.1")
+    implementation("io.github.uratera:progress_anim:1.0.2")
 }
 ```
 ### Attributes
-|Attributes   |Description |
-|-------------|------------|
-|animDuration |Animation duration (default 1500ms)
-|itemColor    |Items color
-|itemColorEnd |Arc end color (for "gradient" style)
-|itemCount    |Number items
-|itemIcon     |Items icon
-|itemHeight   |Items height
-|itemWidth    |Items width
-|itemStyle    |Items style
-| |arrow
-| |circle
-| |dash
-| |gradient
+|Attributes    |Description |
+|--------------|------------|
+|animDuration  |Animation duration (default 1500ms)
+|itemBlurStyle |Styles of blur (default – normal)
+|itemBlurWidth |Blur width
+|itemColor     |Items color
+|itemColorEnd  |Arc end color (for "gradient" style)
+|itemCount     |Number items
+|itemIcon      |Items icon
+|itemHeight    |Items height
+|itemWidth     |Items width
+|itemStyle     |Styles of items (default – dash)
 
+**Styles of item**
+- arrow
+- circle
+- dash
+- gradient
+- random 
+
+**Styles of blur**
+- normal
+- solid
+
+**Usage:**
+```
+<com.tera.progress.ProgressBarAnim
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"/>
+```
 Method:
 ```
 setAnimation
