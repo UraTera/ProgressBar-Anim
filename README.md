@@ -34,6 +34,8 @@ dependencies {
 - normal
 - solid
 
+Note: Blur is only available for the "gradient" style.
+
 **Usage:**
 ```
 <com.tera.progress.ProgressBarAnim
