@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -8,15 +9,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.tera.progressbar_anim.ProgressBarAnim
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        app:itemColor="@color/blue"
-        app:itemStyle="arrow" />
-
-    <com.tera.progressbar_anim.ProgressBarAnim
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        app:itemColor="@color/blue"
-        app:itemStyle="arrow" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/rectangle"
+        app:itemStyle="arrow"
+        app:itemColor="@color/blue" />
 
 </LinearLayout>

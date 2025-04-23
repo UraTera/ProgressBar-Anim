@@ -22,6 +22,9 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import kotlin.math.asin
 import kotlin.math.min
+import androidx.core.graphics.withRotation
+import androidx.core.graphics.withSave
+import kotlin.math.max
 
 class ProgressBarAnim(
     context: Context,
@@ -45,18 +48,16 @@ class ProgressBarAnim(
     private val mPaintArc = Paint(Paint.ANTI_ALIAS_FLAG)
 
     private var mRadius = RADIUS
-    private var mRadiusArc = 0f
     private var mXc = 0f
     private var mYc = 0f
-    private val mColorHsv = FloatArray(3)
+    private val mArrayColor = FloatArray(3)
     private var mDAlpha = 0f
     private var mRect = RectF()
-    private val mPath = Path()
-    private var mArcWidth = 0f
     private var mAnimator: ObjectAnimator? = null
     private var mHandler = Handler(Looper.getMainLooper())
     private var mShaderArc: Shader? = null
     private var mAxesWidth = 1f
+    private var mPathArrow = Path()
 
     // Attributes
     private var mItemsColor = 0
@@ -92,7 +93,7 @@ class ProgressBarAnim(
         setBlur()
 
         mDAlpha = 255f / mItemsCount
-        Color.colorToHSV(mItemsColor, mColorHsv) // Цвет Hsv
+        Color.colorToHSV(mItemsColor, mArrayColor) // Цвет Hsv
 
         mPaintArc.color = mItemsColor
         mPaintArc.style = Paint.Style.STROKE
@@ -143,16 +144,16 @@ class ProgressBarAnim(
         val k = 1.2f
 
         val angle = -360f / mItemsCount
-        canvas.save()
-        for (i in 0..<mItemsCount) {
-            var alpha = 255 - (mDAlpha * i * k).toInt()
-            if (alpha < 0) alpha = 0
-            val color = Color.HSVToColor(alpha, mColorHsv)
-            mPaint.color = color
-            canvas.drawRoundRect(x1, y1, x2, y2, r, r, mPaint)
-            canvas.rotate(angle, mXc, mYc)
+        canvas.withSave() {
+            for (i in 0..<mItemsCount) {
+                var alpha = 255 - (mDAlpha * i * k).toInt()
+                if (alpha < 0) alpha = 0
+                val color = Color.HSVToColor(alpha, mArrayColor)
+                mPaint.color = color
+                drawRoundRect(x1, y1, x2, y2, r, r, mPaint)
+                rotate(angle, mXc, mYc)
+            }
         }
-        canvas.restore()
     }
 
     private fun drawCircle(canvas: Canvas) {
@@ -164,56 +165,54 @@ class ProgressBarAnim(
         val k = 1.2f
 
         val angle = -360f / mItemsCount
-        canvas.save()
-        for (i in 0..<mItemsCount) {
-            var alpha = 255 - (mDAlpha * i * k).toInt()
-            if (alpha < 0) alpha = 0
-            val color = Color.HSVToColor(alpha, mColorHsv)
-            mPaint.color = color
-            canvas.drawCircle(mXc, y, r, mPaint)
-            canvas.rotate(angle, mXc, mYc)
+        canvas.withSave() {
+            for (i in 0..<mItemsCount) {
+                var alpha = 255 - (mDAlpha * i * k).toInt()
+                if (alpha < 0) alpha = 0
+                val color = Color.HSVToColor(alpha, mArrayColor)
+                mPaint.color = color
+                drawCircle(mXc, y, r, mPaint)
+                rotate(angle, mXc, mYc)
+            }
         }
-        canvas.restore()
     }
 
     private fun drawArrows(canvas: Canvas) {
         mPaint.color = mItemsColor
         mPaint.style = Paint.Style.FILL
-        setArcArrow()
-        val a1 = 5f
-        val a2 = -120f
-
-        canvas.drawArc(mRect, a1, a2, false, mPaintArc)
-        canvas.drawPath(mPath, mPaint)
-        canvas.save()
-        canvas.rotate(180f, mXc, mYc)
-        canvas.drawArc(mRect, a1, a2, false, mPaintArc)
-        canvas.drawPath(mPath, mPaint)
-        canvas.restore()
+        setArrow()
+        canvas.drawPath(mPathArrow, mPaint)
+        canvas.withRotation(180f, mXc, mYc) {
+            drawPath(mPathArrow, mPaint)
+        }
     }
 
-    private fun setArcArrow() {
-        mRadiusArc = mRadius * 0.64f
-        val r = mRadiusArc
-        val x1 = mXc - r
-        val y1 = mYc - r
-        val x2 = mXc + r
-        val y2 = mYc + r
-        mRect = RectF(x1, y1, x2, y2)
+    private fun setArrow() {
+        val r = mRadius * 0.64f
+        val w = mRadius * 0.11f
+        val arrow = mRadius - r
+        val a = 120f
 
-        mArcWidth = mRadius * 0.2f
-        mPaintArc.strokeWidth = mArcWidth
+        val rectOut = RectF(
+            mXc - r - w,
+            mYc - r - w,
+            mXc + r + w,
+            mYc + r + w
+        )
+        val rectIn = RectF(
+            mXc - r + w,
+            mYc - r + w,
+            mXc + r - w,
+            mYc + r - w
+        )
 
-        val arrow = mArcWidth * 1.7f
-        val xA1 = mXc + r
-        val xA2 = xA1 + arrow
-        val xA3 = xA1 - arrow
-
-        mPath.moveTo(xA1, mYc)
-        mPath.lineTo(xA2, mYc)
-        mPath.lineTo(xA1, mYc + arrow * 1.1f)
-        mPath.lineTo(xA3, mYc)
-        mPath.close()
+        mPathArrow.addArc(rectOut, -a, a)
+        mPathArrow.lineTo(mXc + r + arrow, mYc)
+        mPathArrow.lineTo(mXc + r, mYc + arrow * 1.2f)
+        mPathArrow.lineTo(mXc + r - arrow, mYc)
+        mPathArrow.lineTo(mXc + r - w, mYc)
+        mPathArrow.arcTo(rectIn, 0f, -a)
+        mPathArrow.close()
     }
 
     private fun drawGrad(canvas: Canvas) {
@@ -224,7 +223,7 @@ class ProgressBarAnim(
         if (h > mRadius) h = mRadius
 
         val colorStart: Int = if (mItemsColorEnd == 0)
-            Color.HSVToColor(0, mColorHsv)
+            Color.HSVToColor(0, mArrayColor)
         else mItemsColorEnd
 
         mShaderArc = SweepGradient(mXc, mYc, colorStart, mItemsColor)
@@ -298,16 +297,16 @@ class ProgressBarAnim(
         val drawable = ContextCompat.getDrawable(context, mItemIcon) as Drawable
         drawable.setBounds(x1.toInt(), y1.toInt(), x2.toInt(), y2.toInt())
 
-        canvas.save()
-        for (i in 0..<mItemsCount) {
-            var alpha = 255 - (mDAlpha * i * k).toInt()
-            if (alpha < 0) alpha = 0
-            val color = Color.HSVToColor(alpha, mColorHsv)
-            DrawableCompat.setTint(drawable, color)
-            canvas.rotate(dA, mXc, mYc)
-            drawable.draw(canvas)
+        canvas.withSave() {
+            for (i in 0..<mItemsCount) {
+                var alpha = 255 - (mDAlpha * i * k).toInt()
+                if (alpha < 0) alpha = 0
+                val color = Color.HSVToColor(alpha, mArrayColor)
+                DrawableCompat.setTint(drawable, color)
+                rotate(dA, mXc, mYc)
+                drawable.draw(this)
+            }
         }
-        canvas.restore()
     }
 
     private fun drawAxes(canvas: Canvas) {
@@ -332,18 +331,29 @@ class ProgressBarAnim(
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-        val wC = (mRadius * 2).toInt() + mBlurWidth
+        val minWidth = suggestedMinimumWidth + paddingLeft + paddingRight
+        val minHeight= suggestedMinimumHeight + paddingTop + paddingBottom
+
+        val wC = (mRadius * 2).toInt() + mBlurWidth + paddingLeft + paddingRight
+        val hC = (mRadius * 2).toInt() + mBlurWidth + paddingTop + paddingBottom
+
+        val desiredWidth = max(minWidth, wC)
+        val desiredHeight  = max(minHeight, hC)
+
         setMeasuredDimension(
-            resolveSize(wC, widthMeasureSpec),
-            resolveSize(wC, heightMeasureSpec)
+            resolveSize(desiredWidth, widthMeasureSpec),
+            resolveSize(desiredHeight, heightMeasureSpec)
         )
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
-        mRadius = min(w, h) / 2f - mBlurWidth
-        mXc = w / 2f
-        mYc = h / 2f
+        val wC = w - paddingLeft - paddingRight
+        val hC = h - paddingTop - paddingBottom
+
+        mRadius = min(wC, hC) / 2f - mBlurWidth
+        mXc = w / 2f // + paddingLeft / 2 - paddingRight / 2
+        mYc = h / 2f // + paddingTop / 2 - paddingBottom / 2
         startAnim()
     }
 
