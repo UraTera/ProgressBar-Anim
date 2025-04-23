@@ -1,29 +1,47 @@
 ## An example of creating a circular animated ProgressBar.
 
-![ProgressBarAnim](https://github.com/user-attachments/assets/dbbb6508-626b-4d9e-b26b-221e31bdab7e)
+![ProgressBarAnim3](https://github.com/user-attachments/assets/08eb2eb1-815f-4856-8e00-200150357c10)
+
 
 Open source. To use the ready-made library, add the dependency:
 ```
 dependencies {
-    implementation("io.github.uratera:progress_anim:1.0.1")
+    implementation("io.github.uratera:progress_anim:1.1.0")
 }
 ```
 ### Attributes
-|Attributes   |Description |
-|-------------|------------|
-|animDuration |Animation duration (default 1500ms)
-|itemColor    |Items color
-|itemColorEnd |Arc end color (for "gradient" style)
-|itemCount    |Number items
-|itemIcon     |Items icon
-|itemHeight   |Items height
-|itemWidth    |Items width
-|itemStyle    |Items style
-| |arrow
-| |circle
-| |dash
-| |gradient
+|Attributes    |Description |
+|--------------|------------|
+|animDuration  |Animation duration (default 1500ms)
+|itemBlurStyle |Styles of blur (default – normal)
+|itemBlurWidth |Blur width
+|itemColor     |Items color
+|itemColorEnd  |Arc end color (for "gradient" style)
+|itemCount     |Number items
+|itemIcon      |Items icon
+|itemHeight    |Items height
+|itemWidth     |Items width
+|itemStyle     |Styles of items (default – dash)
 
+**Styles of item:**
+- arrow
+- circle
+- dash
+- gradient
+- random 
+
+**Styles of blur:**
+- normal
+- solid
+
+Note: Blur is only available for the "gradient" style.
+
+**Usage:**
+```
+<com.tera.progress.ProgressBarAnim
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"/>
+```
 Method:
 ```
 setAnimation
