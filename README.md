@@ -6,7 +6,7 @@
 Open source. To use the ready-made library, add the dependency:
 ```
 dependencies {
-    implementation("io.github.uratera:progress_anim:1.1.1")
+    implementation("io.github.uratera:progress_anim:1.1.2")
 }
 ```
 ### Attributes
@@ -21,6 +21,7 @@ dependencies {
 |itemIcon      |Items icon
 |itemHeight    |Items height
 |itemWidth     |Items width
+|itemSize      |ProgressBar Size
 |itemStyle     |Styles of items (default – dash)
 
 **Styles of item:**
