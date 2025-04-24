@@ -8,6 +8,7 @@
         <attr name="itemColorEnd" format="color"/>
         <attr name="itemCount" format="integer"/>
         <attr name="itemIcon" format="reference"/>
+        <attr name="itemSize" format="dimension"/>
 
         <attr name="itemHeight" format="dimension"/>
         <attr name="itemWidth" format="dimension"/>

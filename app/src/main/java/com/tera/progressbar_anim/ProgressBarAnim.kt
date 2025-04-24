@@ -38,7 +38,7 @@ class ProgressBarAnim(
     constructor(context: Context) : this(context, null)
 
     companion object {
-        const val RADIUS = 100f
+        const val ITEM_SIZE = 200
         const val ITEM_COUNT = 10
         const val ITEM_COLOR = Color.BLUE
         const val DURATION = 1500
@@ -47,7 +47,7 @@ class ProgressBarAnim(
     private val mPaint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val mPaintArc = Paint(Paint.ANTI_ALIAS_FLAG)
 
-    private var mRadius = RADIUS
+    private var mRadius = 0f
     private var mXc = 0f
     private var mYc = 0f
     private val mArrayColor = FloatArray(3)
@@ -66,6 +66,7 @@ class ProgressBarAnim(
     private var mItemIcon = 0
     private var mItemHeight = 0
     private var mItemWidth = 0
+    private var mItemSize = 0
     private var mItemStyle = 0
     private var mDuration = 0L
     private var mBlurWidth = 0        // Толщина размытия
@@ -79,7 +80,7 @@ class ProgressBarAnim(
         mItemsCount = a.getInt(R.styleable.ProgressBarAnim_itemCount, ITEM_COUNT)
         mItemIcon = a.getResourceId(R.styleable.ProgressBarAnim_itemIcon, 0)
         mDuration = a.getInt(R.styleable.ProgressBarAnim_animDuration, DURATION).toLong()
-
+        mItemSize = a.getDimensionPixelSize(R.styleable.ProgressBarAnim_itemSize, ITEM_SIZE)
         mItemHeight = a.getDimensionPixelSize(R.styleable.ProgressBarAnim_itemHeight, 0)
         mItemWidth = a.getDimensionPixelSize(R.styleable.ProgressBarAnim_itemWidth, 0)
         mItemStyle = a.getInt(R.styleable.ProgressBarAnim_itemStyle, 0)
@@ -88,6 +89,7 @@ class ProgressBarAnim(
         val blurStyle = a.getInt(R.styleable.ProgressBarAnim_itemBlurStyle, 0)
         a.recycle()
 
+        mRadius = mItemSize / 2f
         mBlurStyle = if (blurStyle == 0) Blur.NORMAL
         else Blur.SOLID
         setBlur()
