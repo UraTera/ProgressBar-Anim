@@ -6,23 +6,24 @@
 Open source. To use the ready-made library, add the dependency:
 ```
 dependencies {
-    implementation("io.github.uratera:progress_anim:1.1.2")
+    implementation("io.github.uratera:progress_anim:1.1.3")
 }
 ```
 ### Attributes
-|Attributes    |Description |
-|--------------|------------|
-|animDuration  |Animation duration (default 1500ms)
-|itemBlurStyle |Styles of blur (default – normal)
-|itemBlurWidth |Blur width
-|itemColor     |Items color
-|itemColorEnd  |Arc end color (for "gradient" style)
-|itemCount     |Number items
-|itemIcon      |Items icon
-|itemHeight    |Items height
-|itemWidth     |Items width
-|itemSize      |ProgressBar Size
-|itemStyle     |Styles of items (default – dash)
+Attributes	    |Description
+----------------|--------------
+animation	    |Animation state (default - true)
+animDuration	|Animation duration (default 1500ms)
+itemBlurStyle	|Styles of blur (default – normal)
+itemBlurWidth	|Blur width
+itemColor	    |Items color
+itemColorEnd	|Arc end color (for "gradient" style)
+itemCount	    |Number items
+itemIcon	    |Items icon
+itemHeight	    |Items height
+itemWidth	    |Items width
+itemStyle	    |Styles of items (default – dash)
+
 
 **Styles of item:**
 - arrow
