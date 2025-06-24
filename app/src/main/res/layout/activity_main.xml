@@ -36,7 +36,7 @@
                 <com.tera.progressbar_anim.ProgressBarAnim
                     android:id="@+id/pb2"
                     style="@style/pb_bar"
-
+                    app:animation="false"
                     app:itemColor="@color/white"
                     app:itemStyle="gradient" />
             </FrameLayout>

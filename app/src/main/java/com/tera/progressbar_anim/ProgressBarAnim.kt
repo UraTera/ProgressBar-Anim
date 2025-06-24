@@ -19,12 +19,13 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.animation.LinearInterpolator
 import androidx.core.content.ContextCompat
+import androidx.core.content.withStyledAttributes
 import androidx.core.graphics.drawable.DrawableCompat
-import kotlin.math.asin
-import kotlin.math.min
 import androidx.core.graphics.withRotation
 import androidx.core.graphics.withSave
+import kotlin.math.asin
 import kotlin.math.max
+import kotlin.math.min
 
 class ProgressBarAnim(
     context: Context,
@@ -56,10 +57,11 @@ class ProgressBarAnim(
     private var mAnimator: ObjectAnimator? = null
     private var mHandler = Handler(Looper.getMainLooper())
     private var mShaderArc: Shader? = null
-    private var mAxesWidth = 1f
     private var mPathArrow = Path()
+    private var mBlurStyle: Blur? = null
 
     // Attributes
+    private var mAnimation = false
     private var mItemsColor = 0
     private var mItemsColorEnd = 0
     private var mItemsCount = 0
@@ -69,30 +71,30 @@ class ProgressBarAnim(
     private var mItemSize = 0
     private var mItemStyle = 0
     private var mDuration = 0L
-    private var mBlurWidth = 0        // Толщина размытия
-    private var mBlurStyle: Blur? = null // Стиль размытия
-
+    private var mBlurStyleNum = 0
+    private var mBlurWidth = 0
 
     init {
-        val a = context.obtainStyledAttributes(attrs, R.styleable.ProgressBarAnim)
-        mItemsColor = a.getColor(R.styleable.ProgressBarAnim_itemColor, ITEM_COLOR)
-        mItemsColorEnd = a.getColor(R.styleable.ProgressBarAnim_itemColorEnd, 0)
-        mItemsCount = a.getInt(R.styleable.ProgressBarAnim_itemCount, ITEM_COUNT)
-        mItemIcon = a.getResourceId(R.styleable.ProgressBarAnim_itemIcon, 0)
-        mDuration = a.getInt(R.styleable.ProgressBarAnim_animDuration, DURATION).toLong()
-        mItemSize = a.getDimensionPixelSize(R.styleable.ProgressBarAnim_itemSize, ITEM_SIZE)
-        mItemHeight = a.getDimensionPixelSize(R.styleable.ProgressBarAnim_itemHeight, 0)
-        mItemWidth = a.getDimensionPixelSize(R.styleable.ProgressBarAnim_itemWidth, 0)
-        mItemStyle = a.getInt(R.styleable.ProgressBarAnim_itemStyle, 0)
-
-        mBlurWidth = a.getDimensionPixelSize(R.styleable.ProgressBarAnim_itemBlurWidth, 0)
-        val blurStyle = a.getInt(R.styleable.ProgressBarAnim_itemBlurStyle, 0)
-        a.recycle()
+        context.withStyledAttributes(attrs, R.styleable.ProgressBarAnim) {
+            mAnimation = getBoolean(R.styleable.ProgressBarAnim_animation, true)
+            mBlurWidth = getDimensionPixelSize(R.styleable.ProgressBarAnim_itemBlurWidth, 0)
+            mBlurStyleNum = getInt(R.styleable.ProgressBarAnim_itemBlurStyle, 0)
+            mDuration = getInt(R.styleable.ProgressBarAnim_animDuration, DURATION).toLong()
+            mItemsColor = getColor(R.styleable.ProgressBarAnim_itemColor, ITEM_COLOR)
+            mItemsColorEnd = getColor(R.styleable.ProgressBarAnim_itemColorEnd, 0)
+            mItemsCount = getInt(R.styleable.ProgressBarAnim_itemCount, ITEM_COUNT)
+            mItemHeight = getDimensionPixelSize(R.styleable.ProgressBarAnim_itemHeight, 0)
+            mItemWidth = getDimensionPixelSize(R.styleable.ProgressBarAnim_itemWidth, 0)
+            mItemIcon = getResourceId(R.styleable.ProgressBarAnim_itemIcon, 0)
+            mItemSize = getDimensionPixelSize(R.styleable.ProgressBarAnim_itemSize, ITEM_SIZE)
+            mItemStyle = getInt(R.styleable.ProgressBarAnim_itemStyle, 0)
+        }
 
         mRadius = mItemSize / 2f
-        mBlurStyle = if (blurStyle == 0) Blur.NORMAL
+        mBlurStyle = if (mBlurStyleNum == 0) Blur.NORMAL
         else Blur.SOLID
-        setBlur()
+
+        initParams()
 
         mDAlpha = 255f / mItemsCount
         Color.colorToHSV(mItemsColor, mArrayColor) // Цвет Hsv
@@ -101,7 +103,7 @@ class ProgressBarAnim(
         mPaintArc.style = Paint.Style.STROKE
     }
 
-    private fun setBlur() {
+    private fun initParams() {
         if (mBlurStyle != null && mBlurWidth > 0 && mItemStyle == 2) {
             setLayerType(LAYER_TYPE_SOFTWARE, mPaint)
             mPaint.setMaskFilter(BlurMaskFilter(mBlurWidth.toFloat(), mBlurStyle))
@@ -114,18 +116,15 @@ class ProgressBarAnim(
         super.onDraw(canvas)
         if (mItemIcon != 0)
             drawItemsIcon(canvas)
-        else if (mItemStyle == 0)
-            drawDash(canvas)
-        else if (mItemStyle == 1)
-            drawArrows(canvas)
-        else if (mItemStyle == 2)
-            drawGrad(canvas)
-        else if (mItemStyle == 3)
-            drawCircle(canvas)
-        else
-            drawArcRandom(canvas)
-        // Оси
-        //drawAxes(canvas)
+        else {
+            when(mItemStyle){
+                0 -> drawDash(canvas)
+                1 -> drawArrows(canvas)
+                2 -> drawGrad(canvas)
+                3 -> drawCircle(canvas)
+                4 -> drawArcRandom(canvas)
+            }
+        }
     }
 
     private fun drawDash(canvas: Canvas) {
@@ -146,7 +145,7 @@ class ProgressBarAnim(
         val k = 1.2f
 
         val angle = -360f / mItemsCount
-        canvas.withSave() {
+        canvas.withSave {
             for (i in 0..<mItemsCount) {
                 var alpha = 255 - (mDAlpha * i * k).toInt()
                 if (alpha < 0) alpha = 0
@@ -167,7 +166,7 @@ class ProgressBarAnim(
         val k = 1.2f
 
         val angle = -360f / mItemsCount
-        canvas.withSave() {
+        canvas.withSave {
             for (i in 0..<mItemsCount) {
                 var alpha = 255 - (mDAlpha * i * k).toInt()
                 if (alpha < 0) alpha = 0
@@ -299,7 +298,7 @@ class ProgressBarAnim(
         val drawable = ContextCompat.getDrawable(context, mItemIcon) as Drawable
         drawable.setBounds(x1.toInt(), y1.toInt(), x2.toInt(), y2.toInt())
 
-        canvas.withSave() {
+        canvas.withSave {
             for (i in 0..<mItemsCount) {
                 var alpha = 255 - (mDAlpha * i * k).toInt()
                 if (alpha < 0) alpha = 0
@@ -309,16 +308,6 @@ class ProgressBarAnim(
                 drawable.draw(this)
             }
         }
-    }
-
-    private fun drawAxes(canvas: Canvas) {
-        mPaint.style = Paint.Style.STROKE
-        mPaint.color = Color.RED
-        mPaint.strokeWidth = mAxesWidth
-
-        val r = mRadius - mAxesWidth / 2
-        canvas.drawCircle(mXc, mYc, r, mPaint)
-        canvas.drawLine(0f, mYc, width.toFloat(), mYc, mPaint)
     }
 
     // Animation
@@ -334,13 +323,13 @@ class ProgressBarAnim(
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
         val minWidth = suggestedMinimumWidth + paddingLeft + paddingRight
-        val minHeight= suggestedMinimumHeight + paddingTop + paddingBottom
+        val minHeight = suggestedMinimumHeight + paddingTop + paddingBottom
 
         val wC = (mRadius * 2).toInt() + mBlurWidth + paddingLeft + paddingRight
         val hC = (mRadius * 2).toInt() + mBlurWidth + paddingTop + paddingBottom
 
         val desiredWidth = max(minWidth, wC)
-        val desiredHeight  = max(minHeight, hC)
+        val desiredHeight = max(minHeight, hC)
 
         setMeasuredDimension(
             resolveSize(desiredWidth, widthMeasureSpec),
@@ -354,9 +343,15 @@ class ProgressBarAnim(
         val hC = h - paddingTop - paddingBottom
 
         mRadius = min(wC, hC) / 2f - mBlurWidth
-        mXc = w / 2f // + paddingLeft / 2 - paddingRight / 2
-        mYc = h / 2f // + paddingTop / 2 - paddingBottom / 2
+        mXc = w / 2f
+        mYc = h / 2f
+
         startAnim()
+
+        if (mAnimation)
+            mAnimator?.resume()
+        else
+            mAnimator?.pause()
     }
 
     var animation: Boolean = false
