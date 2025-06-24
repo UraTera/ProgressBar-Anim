@@ -1,5 +1,7 @@
 ## An example of creating a circular animated ProgressBar.
 
+Project created in Android Studio Meerkat | 2024.3.1 Patch 2.
+
 ![ProgressBarAnim3](https://github.com/user-attachments/assets/08eb2eb1-815f-4856-8e00-200150357c10)
 
 
